@@ -13,7 +13,7 @@ from sqlalchemy.dialects.mysql import insert
 # CONFIG
 # -----------------------------
 MYSQL_USER = "root"
-MYSQL_PASSWORD = "Gj10077436"
+MYSQL_PASSWORD = "YOUR_MySQL_PASSWORD"
 MYSQL_HOST = "localhost"
 MYSQL_PORT = 3306
 MYSQL_DB = "bls"
