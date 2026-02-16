@@ -124,7 +124,7 @@ def serpapi_to_df(results):
 
 #connect to SQL database - "search_trend_data"
 DATABASE_URL = (
-    "mysql+pymysql://root:Gj10077436@localhost:3306/search_trend_data"
+    "mysql+pymysql://root:YOUR_MySQL_PASSWORD@localhost:3306/search_trend_data"
 )
 
 engine = create_engine(DATABASE_URL, future=True)
