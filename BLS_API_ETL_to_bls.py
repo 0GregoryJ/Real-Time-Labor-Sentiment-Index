@@ -18,7 +18,7 @@ ENDYEAR = 2026
 BLS_URL = "https://api.bls.gov/publicAPI/v2/timeseries/data/"
 
 #define engine
-SERVER_URL = "mysql+pymysql://root:Gj10077436@localhost:3306"
+SERVER_URL = "mysql+pymysql://root:password@localhost:3306"
 DB_NAME = "bls"
 DATABASE_URL = f"{SERVER_URL}/{DB_NAME}"
 
