@@ -124,7 +124,7 @@ def serpapi_to_df(results):
 
 
 #connect to SQL database - "search_trend_data"
-SERVER_URL = "mysql+pymysql://root:Gj10077436@localhost:3306"
+SERVER_URL = "mysql+pymysql://root:password@localhost:3306"
 DB_NAME = "search_trend_data"
 DATABASE_URL = f"{SERVER_URL}/{DB_NAME}"
 
