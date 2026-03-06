@@ -5,6 +5,10 @@ import pandas as pd
 from pathlib import Path
 import os
 
+#directory for parquet output
+BASE_DIR = Path(__file__).resolve().parent
+file_path = BASE_DIR / "data_parquets"
+
 #bls API info
 SERIES_IDS = ["LNS13000000","LNS14000000","CES0000000001","CES0500000002","CES0500000003","CIU2020000000000A"]
 
@@ -86,6 +90,5 @@ BLS_data = BLS_data.drop(columns=["month_num", "year", "period", "footnotes", "r
 BLS_data = BLS_data.rename(columns={"series_id": "query"})
 #add category column
 BLS_data["category"] = "labor_market"
-output_path = Path("/Users/gregoryjoshua/Desktop/Projects/SearchSentimentDashboard/data_parquets")
-BLS_data.to_parquet(output_path / "bls_data.parquet", index=False)
+BLS_data.to_parquet(file_path / "bls_data.parquet", index=False)
 print(BLS_data)

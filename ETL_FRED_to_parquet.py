@@ -2,10 +2,14 @@
 import os
 import requests
 import pandas as pd
+from pathlib import Path
 
 FRED_API_KEY = "59a7ee50b46cb59dbad7aa874b95731c"
 SERIES_ID = "PCE"  # Personal Consumption Expenditures (monthly)
 START_DATE = "2020-01-01"
+
+BASE_DIR = Path(__file__).resolve().parent
+file_path = BASE_DIR / "data_parquets"
 
 def fetch_fred_series_observations(series_id: str, api_key: str, start_date: str) -> pd.DataFrame:
     if not api_key:
@@ -42,7 +46,7 @@ def fetch_fred_series_observations(series_id: str, api_key: str, start_date: str
 def main():
     df = fetch_fred_series_observations(SERIES_ID, FRED_API_KEY, START_DATE)
 
-    df.to_parquet("/Users/gregoryjoshua/Desktop/Projects/SearchSentimentDashboard/data_parquets/FRED_data.parquet", index=False)
+    df.to_parquet(file_path / "FRED_data.parquet", index=False)
 
     print(df)
 

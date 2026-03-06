@@ -2,12 +2,15 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
 import streamlit as st
+from pathlib import Path
 
 #-----read data into pandas------
-FRED_data = pd.read_parquet("/Users/gregoryjoshua/Desktop/Projects/SearchSentimentDashboard/data_parquets/FRED_data.parquet")
-bls_data = pd.read_parquet("/Users/gregoryjoshua/Desktop/Projects/SearchSentimentDashboard/data_parquets/bls_data.parquet")
-serpAPI_data = pd.read_parquet("/Users/gregoryjoshua/Desktop/Projects/SearchSentimentDashboard/data_parquets/search_data.parquet")
-bea_data = pd.read_parquet("/Users/gregoryjoshua/Desktop/Projects/SearchSentimentDashboard/data_parquets/BEA_data.parquet")
+BASE_DIR = Path(__file__).resolve().parent
+file_path = BASE_DIR / "data_parquets"
+FRED_data = pd.read_parquet(file_path / "FRED_data.parquet")
+bls_data = pd.read_parquet(file_path / "bls_data.parquet")
+serpAPI_data = pd.read_parquet(file_path / "search_data.parquet")
+bea_data = pd.read_parquet(file_path / "BEA_data.parquet")
 #-----data analysis------
 #transform BLS labor market data before adding to master df
 bls_data_transformed = bls_data.copy()

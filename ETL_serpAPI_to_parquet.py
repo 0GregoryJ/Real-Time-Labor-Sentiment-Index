@@ -1,6 +1,11 @@
 from serpapi import GoogleSearch
 import pandas as pd
 from functools import reduce
+from pathlib import Path
+
+#directory for parquet output
+BASE_DIR = Path(__file__).resolve().parent
+file_path = BASE_DIR / "data_parquets"
 
 #-----request data------
 #labor market search data
@@ -188,4 +193,4 @@ categories = {
 serpAPI_search_data["category"] = serpAPI_search_data["query"].map(categories)
 
 #write to parquet
-serpAPI_search_data.to_parquet("/Users/gregoryjoshua/Desktop/Projects/SearchSentimentDashboard/data_parquets/search_data.parquet", index=False)
+serpAPI_search_data.to_parquet(file_path / "search_data.parquet", index=False)
