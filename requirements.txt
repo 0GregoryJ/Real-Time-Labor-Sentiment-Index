@@ -4,7 +4,4 @@ plotly
 requests
 numpy
 requests
-pathlib
-datetime
-functools
 serpapi
