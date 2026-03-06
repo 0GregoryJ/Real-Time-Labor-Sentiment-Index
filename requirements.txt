@@ -4,7 +4,6 @@ plotly
 requests
 numpy
 requests
-json
 pathlib
 datetime
 functools
