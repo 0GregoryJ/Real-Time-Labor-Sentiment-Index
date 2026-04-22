@@ -26,6 +26,10 @@ def generate_main_chart(filtered_data, data_selection, range_selection):
     st.plotly_chart(main_chart, use_container_width=True)
 
 def generate_mini_chart(filtered_data, keyword):
+    if keyword not in filtered_data.columns:
+        st.warning(f"Missing column '{keyword}' in dataset; skipping this chart.")
+        return
+
     mini_chart = px.line(
         filtered_data,
         x="date",
