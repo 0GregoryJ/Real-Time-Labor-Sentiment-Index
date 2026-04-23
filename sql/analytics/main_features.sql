@@ -8,16 +8,28 @@ WITH base AS (
         source,
         (
             (value - AVG(value) OVER (
-                PARTITION BY source, query, category
+                PARTITION BY source, query
             ))
             / NULLIF(
                 STDDEV_SAMP(value) OVER (
-                    PARTITION BY source, query, category
+                    PARTITION BY source, query
                 ),
                 0
             )
         ) AS zscore
     FROM fact_observations
+),
+scored AS (
+    SELECT
+        date,
+        value,
+        query,
+        category,
+        source,
+        zscore,
+        -- Normal CDF approximation using tanh, DuckDB-native, and smooth).
+        100.0 * (0.5 * (1.0 + tanh(sqrt(2.0 / pi()) * (zscore + 0.044715 * pow(zscore, 3))))) AS cdf_scaled
+    FROM base
 ),
 aggregated AS (
     SELECT
@@ -26,28 +38,28 @@ aggregated AS (
         AVG(
             CASE
                 WHEN category = 'labor_market' AND source = 'serp'
-                THEN 100.0 * (1.0 / (1.0 + exp(-1.7 * zscore)))
+                THEN cdf_scaled
             END
         ) AS labor_search_sentiment,
 
         AVG(
             CASE
                 WHEN category = 'consumer_spending' AND source = 'serp'
-                THEN 100.0 * (1.0 / (1.0 + exp(-1.7 * zscore)))
+                THEN cdf_scaled
             END
         ) AS spending_search_sentiment,
 
         AVG(
             CASE
-                WHEN category = 'labor_market' AND source IN ('fred', 'bls')
-                THEN 100.0 * (1.0 / (1.0 + exp(-1.7 * zscore)))
+                WHEN category = 'labor_market' AND source IN ('bls')
+                THEN cdf_scaled
             END
         ) AS labor_reported_sentiment,
 
         AVG(
             CASE
-                WHEN category = 'consumer_spending' AND source IN ('fred', 'bls')
-                THEN 100.0 * (1.0 / (1.0 + exp(-1.7 * zscore)))
+                WHEN category = 'consumer_spending' AND source IN ('fred')
+                THEN cdf_scaled
             END
         ) AS spending_reported_sentiment,
 
@@ -65,9 +77,9 @@ aggregated AS (
 
         MAX(
             CASE
-                WHEN query = 'CES0000000001' THEN value
+                WHEN query = 'CES0500000003' THEN value
             END
-        ) AS CES0000000001,
+        ) AS CES0500000003,
 
         MAX(
             CASE
@@ -87,8 +99,26 @@ aggregated AS (
             END
         ) AS layoffs,
 
+        MAX(
+            CASE
+                WHEN query = 'credit card application' THEN value
+            END
+        ) AS credit_card_application,
 
-    FROM base
+        MAX(
+            CASE
+                WHEN query = 'kitchen remodel' THEN value
+            END
+        ) AS kitchen_remodel,
+
+        MAX(
+            CASE
+                WHEN query = 'flight deals' THEN value
+            END
+        ) AS flight_deals,
+
+
+    FROM scored
     GROUP BY date
 )
 
@@ -102,9 +132,13 @@ SELECT
     spending_search_sentiment - spending_reported_sentiment AS spending_gap,
     LNS14000000,
     CES0500000002,
-    CES0000000001,
+    CES0500000003,
     unemployment_benefits,
     second_job,
-    layoffs
+    layoffs,
+    flight_deals,
+    kitchen_remodel,
+    credit_card_application,
+
 FROM aggregated
 ORDER BY date;

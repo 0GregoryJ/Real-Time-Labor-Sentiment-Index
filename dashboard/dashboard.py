@@ -92,7 +92,7 @@ elif range_selection == None and data_selection != None:
 else:
     #selection dictionary
     selection_dict = {
-            "Labor Market Stress": ["labor", ["LNS14000000", "CES0500000002", "CES0000000001", "unemployment_benefits", "second_job", "layoffs"]],
+            "Labor Market Stress": ["labor", ["LNS14000000", "CES0500000002", "CES0500000003", "unemployment_benefits", "second_job", "layoffs"]],
             "Consumer Spending": ["spending", ["spending_reported_sentiment", "kitchen_remodel", "credit_card_application", "flight_deals"]],
             "6 months": datetime.today() - timedelta(days=180),
             "1 year": datetime.today() - timedelta(days=365),
@@ -165,9 +165,9 @@ else:
     
     #individual reported data points
     st.subheader("Individual Reported Data Series")
-    st.markdown('<h6 style="font-weight: 100">Visualize some of the individual reported data series that constitute the reported data composite in the chart above.</h6><hr style="margin-top:5px; margin-bottom:15px">', unsafe_allow_html=True)
-    IRcol1,IRcol2,IRcol3 = st.columns([1,1,1])
     if data_selection == "Labor Market Stress":
+        st.markdown('<h6 style="font-weight: 100">Visualize some of the individual reported data series that constitute the reported data composite in the chart above.</h6><hr style="margin-top:5px; margin-bottom:15px">', unsafe_allow_html=True)
+        IRcol1,IRcol2,IRcol3 = st.columns([1,1,1])
         IRcol1,IRcol2,IRcol3 = st.columns([1,1,1])
         with IRcol1:
                 generate_mini_chart(filtered_data, selection_dict[data_selection][1][0])
@@ -176,6 +176,7 @@ else:
         with IRcol3:
                 generate_mini_chart(filtered_data, selection_dict[data_selection][1][2])
     elif data_selection == "Consumer Spending":
+        st.markdown('<h6 style="font-weight: 100">Visualize the standardized reported consumer spending data..</h6><hr style="margin-top:5px; margin-bottom:15px">', unsafe_allow_html=True)
         generate_mini_chart(filtered_data, selection_dict[data_selection][1][0])
     #insights
     st.subheader("Insights")

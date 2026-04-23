@@ -26,9 +26,6 @@ def generate_main_chart(filtered_data, data_selection, range_selection):
     st.plotly_chart(main_chart, use_container_width=True)
 
 def generate_mini_chart(filtered_data, keyword):
-    if keyword not in filtered_data.columns:
-        st.warning(f"Missing column '{keyword}' in dataset; skipping this chart.")
-        return
 
     mini_chart = px.line(
         filtered_data,
@@ -38,8 +35,8 @@ def generate_mini_chart(filtered_data, keyword):
     #chart title
     title_and_label_dict = {
         "LNS14000000": ["Unemployment Rate", "Percent"],
-        "CES0500000002": ["Average weekly hours", "Hours"],
-        "CES0000000001": ["Payroll Employment", "Thousands of Paid Workers"],
+        "CES0500000002": ["Average Weekly Hours", "Hours"],
+        "CES0500000003": ["Average Hourly Earnings", "Dollars per Hour"],
         "unemployment_benefits": ['"Unemployment Benefits"', "Google Trends Units"],
         "second_job": ['"Second Job"', "Google Trends Units"],
         "layoffs": ['"Layoffs"', "Google Trends Units"],
